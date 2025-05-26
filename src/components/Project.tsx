@@ -28,7 +28,7 @@ export default function Projects() {
     <section
       ref={projectRef}
       id="projects"
-      className="min-h-screen px-6 py-20 bg-[var(--color-primary-200)] text-[var(--color-primary-900)]"
+      className="bg-[linear-gradient(to_bottom,var(--color-primary-600),var(--color-primary-400))] min-h-screen px-6 py-20 text-[var(--color-primary-900)]"
     >
       <h2 className="text-3xl font-bold mb-8">Proyek Saya</h2>
       <div className="grid gap-6 md:grid-cols-3">

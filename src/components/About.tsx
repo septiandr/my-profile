@@ -22,7 +22,7 @@ export default function About() {
     <section
       ref={sectionRef}
       id="about"
-      className="min-h-screen px-6 py-20 bg-[var(--color-primary-100)] text-[var(--color-primary-900)]"
+      className="min-h-screen px-6 py-20 bg-[linear-gradient(to_bottom,var(--color-primary-800),var(--color-primary-600))] text-[var(--color-primary-900)]"
     >
       <h2 className="text-3xl font-bold mb-6">Tentang Saya</h2>
       <p className="max-w-3xl leading-relaxed">

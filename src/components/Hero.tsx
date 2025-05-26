@@ -1,108 +1,145 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { gsap } from "@/lib/gsap";
+// import Header from "./Header";
 
 export default function Hero() {
   const heroRef = useRef<HTMLDivElement>(null);
-  const imageRef = useRef<HTMLDivElement>(null);
-  const headingRef = useRef<HTMLHeadingElement>(null);
-  const textRef = useRef<HTMLParagraphElement>(null);
-  const buttonRef = useRef<HTMLButtonElement>(null);
+  const imgRef = useRef<HTMLImageElement>(null);
+  const bgRef = useRef<HTMLDivElement>(null);
+  const moveImgRef = useRef<HTMLDivElement>(null);
+  const spanRef = useRef<HTMLSpanElement>(null);
+  const text = "Septian D Risanggalih";
+
+  const [displayText, setDisplayText] = useState("");
+
+  const handleMove = (e: MouseEvent) => {
+    const x = (e.clientX - window.innerWidth / 2) / 30;
+    const y = (e.clientY - window.innerHeight / 2) / 30;
+
+    gsap.to(moveImgRef.current, {
+      x,
+      y,
+      duration: 0.1,
+      ease: "power2.out",
+    });
+  };
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.from(imageRef.current, {
-        opacity: 0,
-        scale: 0.8,
-        duration: 1,
-        ease: "power2.out",
-      });
+      // Zoom gambar profil saat scroll
+      gsap.fromTo(
+        imgRef.current,
+        { scale: 1 },
+        {
+          scale: 2,
+          ease: "none",
+          scrollTrigger: {
+            trigger: heroRef.current,
+            start: "top center",
+            end: "bottom top",
+            scrub: true,
+          },
+        }
+      );
 
-      gsap.from(headingRef.current, {
-        opacity: 0,
-        y: 30,
-        delay: 0.3,
-        duration: 1,
-        ease: "power3.out",
-      });
-
-      gsap.from(textRef.current, {
-        opacity: 0,
-        y: 30,
-        delay: 0.5,
-        duration: 1,
-        ease: "power3.out",
-      });
-
-      gsap.from(buttonRef.current, {
-        opacity: 0,
-        y: 30,
-        delay: 0.7,
-        duration: 1,
-        ease: "power3.out",
-      });
+      gsap.fromTo(
+        bgRef.current,
+        { opacity: 1 },
+        {
+          opacity: 0,
+          ease: "none",
+          scrollTrigger: {
+            trigger: heroRef.current,
+            end: 500,
+            scrub: 0.5,
+          },
+        }
+      );
     }, heroRef);
 
-    return () => ctx.revert();
+    window.addEventListener("mousemove", handleMove);
+    return () => {
+      window.removeEventListener("mousemove", handleMove);
+      ctx.revert();
+    };
   }, []);
 
   useEffect(() => {
-    const img = imageRef.current;
-    if (!img) return;
+    let index = 0;
 
-    const handleMove = (e: MouseEvent) => {
-      const rect = img.getBoundingClientRect();
-      const x = (e.clientX - rect.left - rect.width / 2) / 20;
-      const y = (e.clientY - rect.top - rect.height / 2) / 20;
+    const interval = setInterval(() => {
+      setDisplayText(text.slice(0, index + 1));
+      index++;
 
-      gsap.to(img, {
-        x,
-        y,
-        ease: "power2.out",
-        duration: 0.3,
-      });
-    };
+      if (index === text.length) clearInterval(interval);
+    }, 500); // kecepatan ketik (ms)
 
-    window.addEventListener("mousemove", handleMove);
-    return () => window.removeEventListener("mousemove", handleMove);
+    return () => clearInterval(interval);
+  }, []);
+
+  // optional: fade-in animasi dengan gsap
+  useEffect(() => {
+    gsap.from(spanRef.current, {
+      opacity: 0,
+      y: -10,
+      duration: 2,
+      delay: 0.5,
+      ease: "power2.out",
+    });
   }, []);
 
   return (
-    <section
-      ref={heroRef}
-      className="min-h-screen flex flex-col items-center justify-center text-center px-6 py-20 bg-[var(--color-primary-700)] text-[var(--color-primary-100)]"
-    >
-      {/* Foto Profil */}
-      <div
-        ref={imageRef}
-        className="w-32 h-32 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-[var(--color-secondary-500)] mb-6"
+    <>
+      {/* <Header /> */}
+      <section
+        ref={heroRef}
+        className="relative not-first:relative min-h-screen flex flex-col items-center justify-center text-center px-6 py-24 bg-[var(--color-primary-800)] text-[var(--color-primary-100)] overflow-hidden"
       >
-        <img
-          src="/profile.jpeg"
-          alt="My Photo"
-          className="w-full h-full object-cover"
+        {/* Background layer (pakai div agar bisa animasi) */}
+        <div
+          ref={bgRef}
+          className="absolute inset-0 bg-[url('/background.png')] bg-cover bg-center z-10"
         />
-      </div>
 
-      <h2 ref={headingRef} className="text-4xl md:text-5xl font-extrabold mb-4">
-        Halo, Saya Developer
-      </h2>
+        {/* Gradient overlay */}
+        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-[var(--color-secondary-500)] to-transparent pointer-events-none" />
 
-      <p
-        ref={textRef}
-        className="text-lg max-w-xl text-[var(--color-primary-300)]"
-      >
-        Saya membangun antarmuka modern dengan Next.js, GSAP, dan desain
-        minimalis profesional.
-      </p>
+        {/* Gambar Zoom */}
+        <div
+          ref={moveImgRef}
+          className="w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 overflow-hidden rounded-full border-4 border-[var(--color-secondary-500)] shadow-xl mb-8 relative z-10"
+        >
+          <img
+            ref={imgRef}
+            src="/profile.jpeg"
+            alt="Foto Saya"
+            className="w-full h-full object-cover will-change-transform"
+          />
+        </div>
 
-      <button
-        ref={buttonRef}
-        className="mt-8 bg-[var(--color-secondary-600)] hover:bg-[var(--color-secondary-700)] text-white px-6 py-3 rounded-full font-semibold transition"
-      >
-        Hubungi Saya
-      </button>
-    </section>
+        <h1 className="text-4xl md:text-5xl font-bold mb-4 relative z-10">
+          Halo, Saya{" "}
+          <span
+            ref={spanRef}
+            className="text-[var(--color-secondary-400)] inline-block"
+          >
+            {displayText}
+            <span className="animate-pulse">|</span>
+          </span>
+        </h1>
+
+        <p className="text-lg md:text-xl max-w-2xl text-[var(--color-primary-300)] relative z-10">
+          Saya adalah seorang <strong>Software Engineer</strong> dengan
+          pengalaman bekerja di berbagai perusahaan dan menangani beragam proyek
+          korporat. Saya fokus membangun antarmuka web modern menggunakan{" "}
+        </p>
+
+        <button className="mt-10 px-6 py-3 bg-[var(--color-secondary-600)] hover:bg-[var(--color-secondary-700)] text-white text-lg rounded-full shadow-md transition-all duration-300 relative z-10">
+          Hubungi Saya
+        </button>
+      </section>
+    </>
   );
 }

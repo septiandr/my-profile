@@ -22,7 +22,7 @@ export default function Contact() {
     <section
       ref={contactRef}
       id="contact"
-      className="min-h-screen px-6 py-20 bg-[var(--color-primary-600)] text-[var(--color-primary-100)]"
+      className="bg-[linear-gradient(to_bottom,var(--color-primary-100),var(--color-primary-100))] min-h-screen px-6 py-20 text-[var(--color-primary-100)]"
     >
       <h2 className="text-3xl font-bold mb-6">Kontak</h2>
       <form className="max-w-lg space-y-4">
