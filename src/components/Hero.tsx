@@ -133,12 +133,15 @@ export default function Hero() {
         <p className="text-lg md:text-xl max-w-2xl text-[var(--color-primary-300)] relative z-10">
           Saya adalah seorang <strong>Software Engineer</strong> dengan
           pengalaman bekerja di berbagai perusahaan dan menangani beragam proyek
-          korporat. Saya fokus membangun antarmuka web modern menggunakan{" "}
+          korporat. Saya fokus membangun antarmuka web modern{" "}
         </p>
 
-        <button className="mt-10 px-6 py-3 bg-[var(--color-secondary-600)] hover:bg-[var(--color-secondary-700)] text-white text-lg rounded-full shadow-md transition-all duration-300 relative z-10">
+        <a
+          href="wa.me/6285646444805"
+          className="mt-10 px-6 py-3 bg-[var(--color-secondary-600)] hover:bg-[var(--color-secondary-700)] text-white text-lg rounded-full shadow-md transition-all duration-300 relative z-10"
+        >
           Hubungi Saya
-        </button>
+        </a>
       </section>
     </>
   );
