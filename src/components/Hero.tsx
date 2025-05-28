@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "@/lib/gsap";
-// import Header from "./Header";
 
 export default function Hero() {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -28,7 +27,6 @@ export default function Hero() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Zoom gambar profil saat scroll
       gsap.fromTo(
         imgRef.current,
         { scale: 1 },
@@ -74,12 +72,11 @@ export default function Hero() {
       index++;
 
       if (index === text.length) clearInterval(interval);
-    }, 500); // kecepatan ketik (ms)
+    }, 500);
 
     return () => clearInterval(interval);
   }, []);
 
-  // optional: fade-in animasi dengan gsap
   useEffect(() => {
     gsap.from(spanRef.current, {
       opacity: 0,
@@ -92,21 +89,17 @@ export default function Hero() {
 
   return (
     <>
-      {/* <Header /> */}
       <section
         ref={heroRef}
         className="relative not-first:relative min-h-screen flex flex-col items-center justify-center text-center px-6 py-24 bg-[var(--color-primary-800)] text-[var(--color-primary-100)] overflow-hidden"
       >
-        {/* Background layer (pakai div agar bisa animasi) */}
         <div
           ref={bgRef}
           className="absolute inset-0 bg-[url('/background.png')] bg-cover bg-center z-10"
         />
 
-        {/* Gradient overlay */}
         <div className="absolute inset-0 -z-10 bg-gradient-to-b from-[var(--color-secondary-500)] to-transparent pointer-events-none" />
 
-        {/* Gambar Zoom */}
         <div
           ref={moveImgRef}
           className="w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 overflow-hidden rounded-full border-4 border-[var(--color-secondary-500)] shadow-xl mb-8 relative z-10"
