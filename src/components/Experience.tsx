@@ -32,7 +32,7 @@ export default function Experience() {
     <section
       ref={sectionRef}
       id="experience"
-      className="bg-[linear-gradient(to_bottom,var(--color-primary-400),var(--color-primary-100))] min-h-screen px-6 py-20 text-[var(--color-primary-900)]"
+      className="bg-primary-700 min-h-screen px-6 py-20 text-[var(--color-primary-900)]"
     >
       <h2 className="text-3xl font-bold mb-6">Pengalaman Kerja</h2>
       <ul className="space-y-4">

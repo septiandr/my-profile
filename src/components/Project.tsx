@@ -1,17 +1,16 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { gsap, SplitText } from "@/lib/gsap";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { SplitText } from "@/lib/gsap";
+import { projects } from "@/constant";
 
-const projects = [
-  { name: "Proyek A", desc: "Deskripsi proyek A" },
-  { name: "Proyek B", desc: "Deskripsi proyek B" },
-  { name: "Proyek C", desc: "Deskripsi proyek C" },
-];
+gsap.registerPlugin(ScrollTrigger);
 
 export default function Projects() {
-  const sectionRef = useRef(null);
-  const titleRef = useRef(null);
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const titleRef = useRef<HTMLHeadingElement | null>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [isClient, setIsClient] = useState(false);
 
@@ -23,7 +22,7 @@ export default function Projects() {
     if (!isClient || !titleRef.current) return;
 
     const ctx = gsap.context(() => {
-      // Animate SplitText for heading
+      // Animasi judul
       const split = new SplitText(titleRef.current, {
         type: "chars,words",
       });
@@ -40,11 +39,10 @@ export default function Projects() {
         },
       });
 
-      // Animate each card
-      cardRefs.current.forEach((card, i) => {
+      cardRefs.current.forEach((card) => {
         if (!card) return;
 
-        // Entrance animation
+        // Animasi muncul & hilang kartu saat scroll masuk/keluar viewport
         gsap.fromTo(
           card,
           {
@@ -58,20 +56,22 @@ export default function Projects() {
             scale: 1,
             ease: "power3.out",
             duration: 1,
-            delay: i * 0.2,
             scrollTrigger: {
               trigger: card,
               start: "top 90%",
+              end: "bottom 10%",
+              toggleActions: "play reverse play reverse",
+              // markers: true, // aktifkan untuk debug posisi scroll
             },
           }
         );
 
-        // Parallax scroll animation
+        // Parallax ringan saat scroll
         gsap.to(card, {
-          y: -40 - i * 10, // slightly different for each card
+          y: -20,
           ease: "none",
           scrollTrigger: {
-            trigger: sectionRef.current,
+            trigger: card,
             start: "top bottom",
             end: "bottom top",
             scrub: true,
@@ -83,7 +83,6 @@ export default function Projects() {
     return () => ctx.revert();
   }, [isClient]);
 
-  // Hover tilt effect
   const handleMouseMove = (e: React.MouseEvent, index: number) => {
     const card = cardRefs.current[index];
     if (!card) return;
@@ -118,12 +117,10 @@ export default function Projects() {
     <section
       ref={sectionRef}
       id="projects"
-      className="relative bg-gradient-to-b from-[var(--color-primary-700)] to-[var(--color-primary-400)] min-h-screen px-6 py-28 text-[var(--color-primary-50)] overflow-hidden"
+      className="relative bg-primary-700 min-h-screen px-6 py-28 text-[var(--color-primary-50)] overflow-hidden"
     >
-      {/* Background glow */}
       <div className="absolute w-[700px] h-[700px] bg-[var(--color-primary-200)] rounded-full blur-[160px] opacity-20 -z-10 top-1/3 right-1/4 transform -translate-y-1/2" />
 
-      {/* Heading */}
       <h2
         ref={titleRef}
         className="text-5xl md:text-6xl font-extrabold mb-12 tracking-tight text-center text-[var(--color-secondary-700)]"
@@ -131,17 +128,23 @@ export default function Projects() {
         Proyek Saya
       </h2>
 
-      {/* Card Grid */}
       <div className="grid gap-8 md:grid-cols-3 max-w-6xl mx-auto perspective-[1200px]">
         {projects.map((p, i) => (
           <div
             key={i}
-            ref={(el) => (cardRefs.current[i] = el)}
+            ref={(el) => {
+              cardRefs.current[i] = el;
+            }}
             onMouseMove={(e) => handleMouseMove(e, i)}
             onMouseLeave={() => handleMouseLeave(i)}
             className="bg-[var(--color-primary-100)] text-[var(--color-primary-900)] p-6 rounded-2xl shadow-xl transform transition-all duration-300 ease-in-out cursor-pointer will-change-transform"
           >
-            <h3 className="text-2xl font-bold mb-3">{p.name}</h3>
+            <img
+              src={p.image}
+              alt={p.name}
+              className="w-full h-40 object-cover rounded-xl mb-4"
+            />
+            <h3 className="text-2xl font-bold mb-2">{p.name}</h3>
             <p className="text-[var(--color-primary-800)]">{p.desc}</p>
           </div>
         ))}

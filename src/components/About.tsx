@@ -76,17 +76,38 @@ export default function About() {
         ref={titleRef}
         className="text-5xl text-[var(--color-secondary-800)] md:text-6xl font-extrabold mb-8 tracking-tight"
       >
-        {splitText("Tentang Saya")}
+        {splitText("Profile")}
       </h2>
 
       {/* Paragraph */}
       <p
         ref={paragraphRef}
-        className="max-w-2xl text-lg md:text-xl leading-relaxed text-white/80"
+        className="max-w-3xl text-lg md:text-xl leading-relaxed text-white/80 backdrop-blur-sm bg-white/5 px-6 py-6 rounded-xl shadow-lg"
       >
-        Saya seorang developer frontend dengan fokus pada Next.js dan animasi
-        menggunakan GSAP. Saya menyukai desain yang minimalis, profesional, dan
-        interaktif untuk memberikan pengalaman pengguna terbaik.
+        I am a dedicated and versatile <strong>Software Developer</strong> with
+        a strong focus on
+        <strong> frontend development</strong>, currently working at{" "}
+        <strong>PT Technopartner Indonesia</strong>. With a solid foundation in
+        technologies like{" "}
+        <strong>JavaScript, TypeScript, Dart, PHP, Python</strong>, and{" "}
+        <strong>Go</strong>, I specialize in frontend tools such as{" "}
+        <strong>React, React Native</strong>, and
+        <strong> Flutter</strong>, while also having backend experience with{" "}
+        <strong>Node.js</strong> and <strong>Go</strong>.
+        <br />
+        <br />
+        I’ve worked on a variety of projects ranging from{" "}
+        <strong>banking apps</strong>,
+        <strong> Learning Management Systems (LMS)</strong>, interactive{" "}
+        <strong>landing pages</strong>, powerful{" "}
+        <strong>admin dashboards</strong>, custom <strong>CMS</strong>{" "}
+        platforms, modern <strong>e-commerce websites</strong>, and{" "}
+        <strong>AI-integrated applications</strong>.
+        <br />
+        <br />
+        I’m passionate about clean, efficient code and elegant, user-focused
+        design. My mission is to build modern web experiences that are both
+        functional and delightful.
       </p>
     </section>
   );
